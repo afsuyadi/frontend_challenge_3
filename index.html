@@ -44,7 +44,7 @@
       <span class="block max-w-[220px] mx-auto md:max-w-none"><b>Try it free 7 days</b> then $20/mo. thereafter</span>
     </div>
     <form class="bg-white rounded-lg flex flex-col gap-4 p-5 text-left shadow-[0_8px_0_0_hsl(248,32%,39%)]/20">
-      <div >
+      <div>
         <div id="first-name-field" class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4 flex items-center">
           <label for="first-name" class="sr-only">First Name</label>
           <input required type="text" id="first-name" placeholder="First Name"
@@ -55,7 +55,7 @@
             empty</i></p>
       </div>
 
-      <div >
+      <div>
         <div id="last-name-field" class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4 flex items-center">
           <label for="last-name" class="sr-only">Last Name</label>
           <input required type="text" id="last-name" placeholder="Last Name"
@@ -71,9 +71,9 @@
           <label for="email" class="sr-only">Email Address</label>
           <input required type="email" id="email" placeholder="Email Address"
             class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] font-semibold text-sm" />
-          <img src="./images/icon-error.svg" id="email-address-icon" class="w-5 h-5 shrink-0 hidden" />
+          <img src="./images/icon-error.svg" id="email-icon" class="w-5 h-5 shrink-0 hidden" />
         </div>
-        <p id="email-address-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>Looks like this is
+        <p id="email-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>Looks like this is
             not an email</i></p>
       </div>
 
@@ -111,14 +111,23 @@
       { name: "email", isValid: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) },
       { name: "password", isValid: (value) => value.trim().length > 0 },
     ]
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      fields.forEach(({ name, isValid }) => {
+        const input = document.getElementById(name);
+        const hasError = !isValid(input.value);
+        setFieldError(name, hasError);
+      })
+    })
 
-    function setFieldError(name, hasError){
+    function setFieldError(name, hasError) {
       const wrapper = document.getElementById(`${name}-field`);
       const icon = document.getElementById(`${name}-icon`);
       const message = document.getElementById(`${name}-error`);
-      if (hasError) {
-
-      }
+      wrapper.classList.toggle("input-error", hasError);
+      icon.classList.toggle("hidden", !hasError);
+      message.classList.toggle("hidden", !hasError);
     }
   </script>
 </body>
