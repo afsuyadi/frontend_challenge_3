@@ -39,10 +39,15 @@
       <span class="block max-w-[220px] mx-auto md:max-w-none"><b>Try it free 7 days</b> then $20/mo. thereafter</span>
     </div>
     <form class="bg-white rounded-lg flex flex-col gap-4 p-5 text-left shadow-[0_8px_0_0_hsl(248,32%,39%)]/20">
-      <div class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4">
+    <div>
+      <div class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4 flex items-center">
         <label for="first-name" class="sr-only">First Name</label>
-        <input required type="text" id="first-name" placeholder="First Name" class="w-full placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] font-semibold text-sm"/>
+        <input required type="text" id="first-name" placeholder="First Name" class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] font-semibold text-sm"/>
+        <img src="./images/icon-error.svg" id="first-name-icon" class="w-5 h-5 shrink-0 hidden"/>
       </div>
+      <p id="first-name-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden">First Name cannot be empty</p>
+    </div>
+
       <div class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4">
         <label for="first-name" class="sr-only">Last Name</label>
         <input required type="text" id="last-name" placeholder="Last Name" class="w-full placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] font-semibold text-sm"/>
