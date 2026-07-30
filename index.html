@@ -108,7 +108,7 @@
     const fields = [
       { name: "first-name", isValid: (value) => value.trim().length > 0 },
       { name: "last-name", isValid: (value) => value.trim().length > 0 },
-      { name: "email", isValid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) },
+      { name: "email", isValid: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) },
       { name: "password", isValid: (value) => value.trim().length > 0 },
     ]
   </script>
