@@ -55,8 +55,7 @@
             class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] text-sm" />
           <img src="./images/icon-error.svg" id="first-name-icon" class="w-5 h-5 shrink-0 hidden" />
         </div>
-        <p id="first-name-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>First Name cannot be
-            empty</i></p>
+        <p id="first-name-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden italic"></p>
       </div>
 
       <div>
@@ -66,18 +65,17 @@
             class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] text-sm" />
           <img src="./images/icon-error.svg" id="last-name-icon" class="w-5 h-5 shrink-0 hidden" />
         </div>
-        <p id="last-name-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>Last Name cannot be
-            empty</i></p>
+        <p id="last-name-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden italic"></p>
       </div>
 
       <div>
         <div id="email-field" class="border border-[hsl(249,10%,26%)]/10 rounded-lg py-3 px-4 flex items-center">
           <label for="email" class="sr-only">Email Address</label>
-          <input type="email" id="email" placeholder="Email Address"
+          <input id="email" placeholder="Email Address"
             class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] text-sm" />
           <img src="./images/icon-error.svg" id="email-icon" class="w-5 h-5 shrink-0 hidden" />
         </div>
-        <p id="email-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>Email cannot be empty</i></p>
+        <p id="email-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden italic"></p>
       </div>
 
       <div>
@@ -87,8 +85,7 @@
             class="flex-1 placeholder:text-[hsl(249,10%,26%)]/70 font-[Poppins] text-sm" />
           <img src="./images/icon-error.svg" id="password-icon" class="w-5 h-5 shrink-0 hidden" />
         </div>
-        <p id="password-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden"><i>Password cannot be
-            empty</i></p>
+        <p id="password-error" class="text-xs text-[hsl(0,100%,74%)] text-right pt-2 hidden italic"></p>
       </div>
 
       <button type="submit"
@@ -109,28 +106,34 @@
   </div>
   <script>
     const fields = [
-      { name: "first-name", isValid: (value) => value.trim().length > 0 },
-      { name: "last-name", isValid: (value) => value.trim().length > 0 },
-      { name: "email", isValid: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) },
-      { name: "password", isValid: (value) => value.trim().length > 0 },
+      { name: "first-name", getError: (value) => value.trim().length > 0 ? null : "First Name cannot be empty"},
+      { name: "last-name", getError: (value) => value.trim().length > 0 ? null : "Last Name cannot be empty"},
+      { name: "email", getError: (value) => {
+        const trimmed = value.trim();
+        if (trimmed.length === 0) return "Email cannot be empty";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Looks like this is not an email";
+        return null;
+      }},
+      { name: "password", getError: (value) => value.trim().length > 0 ? null : "Password cannot be empty" },
     ]
     const form = document.querySelector("form");
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      fields.forEach(({ name, isValid }) => {
+      fields.forEach(({ name, getError }) => {
         const input = document.getElementById(name);
-        const hasError = !isValid(input.value);
-        setFieldError(name, hasError);
+        const errorMessage = getError(input.value);
+        setFieldError(name, errorMessage);
       })
     })
 
-    function setFieldError(name, hasError) {
+    function setFieldError(name, errorMessage) {
       const wrapper = document.getElementById(`${name}-field`);
       const icon = document.getElementById(`${name}-icon`);
       const message = document.getElementById(`${name}-error`);
-      wrapper.classList.toggle("input-error", hasError);
-      icon.classList.toggle("hidden", !hasError);
-      message.classList.toggle("hidden", !hasError);
+      wrapper.classList.toggle("input-error", errorMessage);
+      icon.classList.toggle("hidden", !errorMessage);
+      message.classList.toggle("hidden", !errorMessage);
+      message.textContent = errorMessage;
     }
   </script>
 </body>
